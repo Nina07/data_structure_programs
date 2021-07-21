@@ -105,12 +105,13 @@ list = LinkedList.new
 list.push(1)
 list.push(2)
 list.push(4)
-list.push(3)
-list.push(5)
-list.push(6)
+# list.push(3)
+# list.push(5)
+# list.push(6)
 # puts list.inspect
 
-list.unshift(8)
+# list.unshift(8)
 
-list.pop(6)
+# list.pop(6)
 puts list.inspect
+puts list.is_empty?
