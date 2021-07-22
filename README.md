@@ -9,3 +9,6 @@ Ruby programs defining data structures and their basic functionalities
     - shift #removes a node from the FRONT
     - size # returns the length of the LL
     - pretty_print # returns the data from the linked list in an array format
+
+2. Unique linked list
+   Given a LL with data 1 -> 2 -> 3 -> 3 -> 4 -> 4 -> 5 , return a ll with 1 -> 2 -> 5
