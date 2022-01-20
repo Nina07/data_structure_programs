@@ -1,13 +1,8 @@
 require './node'
 
-# linked list is composed of nodes. Each node has data, and points to the next node.
 class LinkedList
     def is_empty?
-        if @head == nil
-            return true
-        else
-            return false
-        end
+        return true if @head == nil
     end
 
     # given some data, create a new node at the END
@@ -36,7 +31,7 @@ class LinkedList
     end
 
     # removed data from END and return it 
-    def pop(data)
+    def pop
         if self.is_empty?
             return "Linked list is already empty"
         else
@@ -98,20 +93,21 @@ class LinkedList
     def clear
         @head = nil
     end
+
+    def self.addition(list1, list2)
+        puts list1.each {|i| i.data}
+        # puts list2.inspect
+    end
 end
 
-list = LinkedList.new
+list1 = LinkedList.new
+list2 = LinkedList.new
 
-list.push(1)
-list.push(2)
-list.push(4)
-# list.push(3)
-# list.push(5)
-# list.push(6)
-# puts list.inspect
+list1.push(1)
+list1.push(2)
+list1.push(4)
+list2.push(3)
+list2.push(5)
+list2.push(6)
 
-# list.unshift(8)
-
-# list.pop(6)
-puts list.inspect
-puts list.is_empty?
+LinkedList.addition(list1, list2)

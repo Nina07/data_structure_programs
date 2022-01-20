@@ -5,7 +5,7 @@ class CsvReader
 
     def csv_writer
         headers = ["Issue key", "Issue id", "Issue Type", "Assignee", "Status", "Created", "Updated"]
-        CSV.open("sprint_report_#{DateTime.now.strftime('%y-%m-%d_%H:%M')}", "wb") do |csv|
+        CSV.open("sprint_report_#{DateTime.now.strftime('%y-%m-%d_%H:%M').csv}", "wb") do |csv|
             csv << headers
             CSV.foreach(@@file_path, headers: true) do |row|
                 csv << headers.map {|col| row[col]}
@@ -16,31 +16,40 @@ class CsvReader
     def generate_html_output
         file = File.new("sprint_report_#{DateTime.now.strftime('%y-%m-%d_%H:%M')}.html", "w+")
         csv_table = CSV.table(@@file_path)
+        headers = ["Issue key", "Issue id", "Issue Type", "Assignee", "Status", "Created", "Updated"]
 
-        file.write <<-EOF
-                <HTML>
-                <HEAD>
-                    <h2>Sprint report for #{csv_table[:project_name].uniq.first}</h2></br>
-                </HEAD>
-                <BODY>
-                    <DIV class='header'>Issue counts for the sprint</div></br>
-                    <table border="1">
-                        <tr>
-                            <th style="padding: 5px;">Stories</th>
-                            <th style="padding: 5px;">Bugs</th>
-                            <th style="padding: 5px;">Others</th>
-                        </tr>
-                        <tr>
-                            <td style="padding: 5px;">#{csv_table[:issue_type].count {|type| type == "Story"}}</td>
-                            <td style="padding: 5px;">#{csv_table[:issue_type].count {|type| type == "Bug"}}</td>
-                            <td style="padding: 5px;"> #{csv_table[:issue_type].count {|type| type != "Story" && type != "Bug"}}</td>
-                        </tr>
-                    </table>
-                </BODY></HTML>
-            EOF
+        CSV.foreach(@@file_path, headers: true) do |row|
+            file.write <<-EOF
+                    <HTML>
+                    <HEAD>
+                        <h2>Sprint report for #{csv_table[:project_name].uniq.first}</h2>
+                    </HEAD>
+                    <BODY>
+                        <h4>Total issue count:</h4>
+                        <p>Story: #{csv_table[:issue_type].count {|type| type == "Story"}}, Bug: #{csv_table[:issue_type].count {|type| type == "Bug"}}, Others: #{csv_table[:issue_type].count {|type| type != "Story" && type != "Bug"}}</p>
+                        <table border="1">
+                            <tr>
+                                <th style="padding: 5px;">#{headers[0]}</th>
+                                <th style="padding: 5px;">#{headers[1]}</th>
+                                <th style="padding: 5px;">#{headers[2]}</th>
+                                <th style="padding: 5px;">#{headers[3]}</th>
+                                <th style="padding: 5px;">#{headers[4]}</th>
+                            </tr>
+                            
+                            <tr>
+                                <td style="padding: 5px;">#{headers.map {|col| row[col]}}</td>
+                                <td style="padding: 5px;">#{headers.map {|col| row[col]}}</td>
+                                <td style="padding: 5px;">#{headers.map {|col| row[col]}}</td>
+                                <td style="padding: 5px;">#{headers.map {|col| row[col]}}</td>
+                                <td style="padding: 5px;">#{headers.map {|col| row[col]}}</td>
+                            </tr>
+                        </table>
+                    </BODY></HTML>
+                EOF
+        end
     end
 end
 
 c = CsvReader.new
-# c.csv_writer
-c.generate_html_output
+c.csv_writer
+# c.generate_html_output
