@@ -22,6 +22,7 @@ class LinkedList
 			end
 			current_node.next = Node.new(val, nil) 
 		end
+		print_list
 	end
 
 	def prepend(val)
@@ -36,13 +37,19 @@ class LinkedList
 			end
 			@head = new_node
 		end
+		print_list
 	end
 
 	def insert(index, val)
-		print_list
-		if @head.nil?
+		if index > length_of_list
+			append(val)
+			return
+		elsif @head.nil?
 			@head = Node.new(val, nil)
 			return @head
+		elsif index == 0
+			prepend(val)
+			return
 		else
 			current_node = @head
 			new_node = Node.new(val, nil)
@@ -55,6 +62,34 @@ class LinkedList
 			current_node.next = new_node
 		end
 		print_list
+	end
+
+	def remove(index)
+		return "The index is not valid" if index < 0
+		counter = 0
+		current_node = @head
+		while counter < index-1
+			current_node = current_node.next
+			counter += 1
+		end
+		left_node = current_node
+		unwanted_node = current_node.next
+		left_node.next = unwanted_node.next
+		print_list
+		puts "Updated len: #{length_of_list}"
+	end
+
+	def lookup
+	end
+
+	def length_of_list
+		current_node = @head
+		len = 0
+		while current_node.next != nil
+			current_node = current_node.next
+			len += 1
+		end
+		len
 	end
 
 	def print_list
@@ -81,6 +116,8 @@ l.print_list
 l.prepend(8) # 8-> 5-> 10 -> 45
 #l.print_list
 l.insert(2, 40)
-# l.insert(4,7)
+l.insert(0, 3)
+l.insert(500,7)
+l.remove(3)
 
 # 5 -> 5 -> 45 -> 10 -> 7 -> 45
